@@ -14,7 +14,7 @@ Human Ubiquitin (PDB ID: 1UBQ, 76 amino acids) is an archetypal $\beta$-grasp gl
 
 In our upstream structural modeling protocol ([ubiquitin-pyrosetta-stability](https://github.com/tabantavanmand/ubiquitin-pyrosetta-stability)), in silico site-directed mutagenesis truncated this residue to Alanine (I36A), yielding an unfavorable thermodynamic destabilization of $\Delta\Delta G = +4.39\text{ REU}$ (Rosetta Energy Units, ref2015 scoring function). This energetic penalty is primarily driven by steric cavitation and loss of non-polar packing entropy. 
 
-To systematically evaluate the time-dependent dynamics, allosteric fluctuation transmission, and structural compactness under explicit solvent conditions, we executed all-atom Molecular Dynamics (MD) simulations using GROMACS 2022 with the AMBER99SB-ILDN force field.
+To systematically evaluate the time-dependent dynamics, allosteric fluctuation transmission, and structural compactness under explicit solvent conditions, we executed 10 ns all-atom Molecular Dynamics (MD) simulations using GROMACS 2022 with the AMBER99SB-ILDN force field.
 
 <p align="center">
   <img src="ubiquitin_alignment.png" width="72%" alt="PyMOL Structural Alignment: WT vs I36A">
