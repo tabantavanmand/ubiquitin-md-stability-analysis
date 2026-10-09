@@ -17,9 +17,10 @@ In our upstream structural modeling protocol ([ubiquitin-pyrosetta-stability](ht
 To systematically evaluate the time-dependent dynamics, allosteric fluctuation transmission, and structural compactness under explicit solvent conditions, we executed all-atom Molecular Dynamics (MD) simulations using GROMACS 2022 with the AMBER99SB-ILDN force field.
 
 <p align="center">
-  <img src="structure_overlay_i36a.png" width="72%" alt="PyMOL Structural Alignment: WT vs I36A">
-  <br>
-  <em><b>Figure 1:</b> High-resolution structural alignment of native Wild-Type Ubiquitin (green) and the in silico relaxed I36A mutant (orange). Truncation of the branched sec-butyl side chain of Ile36 to the methyl side chain of Ala36 creates an internal cavity without disrupting the global β-grasp architecture.</em>
+  <img src="ubiquitin_alignment.png" width="72%" alt="PyMOL Structural Alignment: WT vs I36A">
+  
+  <em><b>Figure 1:</b> High-resolution structural alignment of native Wild-Type Ubiquitin (green) and the in silico relaxed I36A mutant (cyan), with the mutanted residue Ala36 highlighted in orange sticks.
+    Truncation of the branched sec-butyl side chain of Ile36 to the methyl side chain of Ala36 reduces hydrophobic core packing without disrupting the global β-grasp architecture.</em>
 </p>
 
 ---
@@ -46,6 +47,7 @@ This investigation couples static thermodynamic sampling with micro-to-nanoscale
 │ • Solvation: TIP3P explicit water model (7,044 solvent molecules for I36A)
 
 │ • Boundary condition: Rhombic Dodecahedron box (dodec, 1.0 nm buffer)
+
 │ • Neutral state confirmation: Total net charge = 0.000 e (No counter-ions added)
 
 ▼
@@ -54,20 +56,21 @@ This investigation couples static thermodynamic sampling with micro-to-nanoscale
 
 │ • Steepest Descent EM: Converged (Fmax < 1000 kJ/mol/nm, Fmax ≈ 988 kJ/mol/nm)
 
-│ • Isochoric-Isothermal (NVT): 100 ps @ 300 K (V-rescale thermostat, τt = 0.1 ps)
+│ • Isochoric-Isothermal (NVT): 100 ps at 300 K (V-rescale thermostat, τt = 0.1 ps)
 
-│ • Isobaric-Isothermal (NPT): 100 ps @ 1.0 bar (Parrinello-Rahman, τp = 2.0 ps)
+│ • Isobaric-Isothermal (NPT): 100 ps at 1.0 bar (Parrinello-Rahman, τp = 2.0 ps)
 
 │ • Density plateau reached: ~1006.6 g/L (Bulk water compliance)
 
 ▼
 
 [ Stage 4: Production Trajectory Profiling & Comparative Analysis ]
-• Time-resolved Backbone Root-Mean-Square Deviation (RMSD)
 
-• Per-Residue Root-Mean-Square Fluctuation (RMSF) & Dynamic Propagation
+│ • Time-resolved Backbone Root-Mean-Square Deviation (RMSD)
 
-• Radius of Gyration (Rg) & Hydrophobic Core Compaction Assessment
+│ • Per-Residue Root-Mean-Square Fluctuation (RMSF) & Dynamic Propagation
+
+│ • Radius of Gyration (Rg) & Hydrophobic Core Compaction Assessment
 
 ---
 
@@ -116,7 +119,7 @@ This investigation couples static thermodynamic sampling with micro-to-nanoscale
 
 ### 3. Structural Compaction & Core Swelling: Radius of Gyration ($R_g$)
 <p align="center">
-  <img src="gyrate_comparison.png" width="75%" alt="Radius of Gyration Comparison: WT vs I36A">
+  <img src="rg_comparison.png" width="72%" alt="Radius of Gyration Comparison: WT vs I36A">
   <br>
   <em><b>Figure 4:</b> Radius of Gyration ($R_g$) profiles over simulation time comparing structural compactness between WT (green solid line) and I36A (orange dashed line).</em>
 </p>
