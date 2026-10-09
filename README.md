@@ -34,7 +34,7 @@ This investigation couples static thermodynamic sampling with micro-to-nanoscale
 - Coordinate initialization from crystal structure (1UBQ, 1.8 Å)
 - Side-chain repacking via PackRotamersMover & FastRelax (ref2015)
 - Thermodynamic perturbation: ΔΔG = +5.12 REU (cavity-induced destabilization)
-- Monitored mass reduction: 8568 Da (WT) → 8522.8 Da (I36A)
+- Monitored mass reduction: 8564.9 Da (WT) → 8522.8 Da (I36A) [Δ = -42.1 Da]
 
 
 ### Stage 2: Solvation, Topology & Neutrality Verification (GROMACS)
