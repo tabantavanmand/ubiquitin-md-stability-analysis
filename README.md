@@ -12,7 +12,7 @@
 
 Human Ubiquitin (PDB ID: 1UBQ, 76 amino acids) is an archetypal $\beta$-grasp globular protein known for its extraordinary thermal and conformational stability. This structural resilience is predominantly anchored by a densely packed hydrophobic interior. Within the hydrophobic core, Isoleucine 36 (Ile36) located on the third $\beta$-strand ($\beta_3$) mediates crucial tertiary contacts and dispersion packing against surrounding hydrophobic side chains (including Leu50, Leu67, and Val70).
 
-In our upstream structural modeling protocol ([ubiquitin-pyrosetta-stability](https://github.com/tabantavanmand/ubiquitin-pyrosetta-stability)), in silico site-directed mutagenesis truncated this residue to Alanine (I36A), yielding an unfavorable thermodynamic destabilization of $\Delta\Delta G = +4.39\text{ REU}$ (Rosetta Energy Units, ref2015 scoring function). This energetic penalty is primarily driven by steric cavitation and loss of non-polar packing entropy. 
+In our upstream structural modeling protocol ([ubiquitin-pyrosetta-stability](https://github.com/tabantavanmand/ubiquitin-pyrosetta-stability)), in silico site-directed mutagenesis truncated this residue to Alanine (I36A), yielding an unfavorable thermodynamic destabilization of $\Delta\Delta G = +5.12\text{ REU}$ (Rosetta Energy Units, ref2015 scoring function). This energetic penalty is primarily driven by steric cavitation and loss of non-polar packing entropy. 
 
 To systematically evaluate the time-dependent dynamics, allosteric fluctuation transmission, and structural compactness under explicit solvent conditions, we executed 1.0 ns all-atom Molecular Dynamics (MD) simulations using GROMACS 2022 with the AMBER99SB-ILDN force field.
 
@@ -33,7 +33,7 @@ This investigation couples static thermodynamic sampling with micro-to-nanoscale
 
 - Coordinate initialization from crystal structure (1UBQ, 1.8 Å)
 - Side-chain repacking via PackRotamersMover & FastRelax (ref2015)
-- Thermodynamic perturbation: ΔΔG = +4.39 REU (cavity-induced destabilization)
+- Thermodynamic perturbation: ΔΔG = +5.12 REU (cavity-induced destabilization)
 - Monitored mass reduction: 8568 Da (WT) → 8522.8 Da (I36A)
 
 
