@@ -138,17 +138,38 @@ While comprehensive conformational landscape sampling and large-scale unfolding 
 
 ## Repository File Architecture
 ```plaintext
-├── 1UBQ.pdb                       # Native Wild-Type crystallographic coordinates (1.8 Å)
-├── 1UBQ_I36A.pdb                  # PyRosetta FastRelax-minimized mutant coordinate model
-├── analyze_gyrate.py              # Automated analysis script for Radius of Gyration (Rg)
-├── compare_rmsf.py                # Comparative plotting script for residue-level RMSF
-├── plot_rmsd.py                   # Time-series analysis script for backbone RMSD
-├── rmsd_comparison.png            # Dual-trajectory RMSD comparison plot (300 DPI)
-├── rmsf_comparison.png            # Dual-trajectory residue fluctuation profile (300 DPI)
-├── gyrate_comparison.png          # Dual-trajectory structural compactness plot (300 DPI)
-├── structure_overlay_i36a.png     # Ray-traced PyMOL superposition render
-└── README.md                      # Comprehensive biophysical documentation
+├── 1UBQ.pdb                  # Native Wild-Type crystallographic coordinates (1.8 Å)
+├── 1UBQ_I36A.pdb             # PyRosetta FastRelax-minimized I36A mutant coordinate model
+├── analyze_gyrate.py         # Automated Rg analysis script (WT trajectory)
+├── analyze_rmsd.py           # Automated backbone RMSD analysis script (WT)
+├── analyze_rmsf.py           # Automated residue-level RMSF analysis script (WT)
+├── compare_rg.py             # Comparative Rg plotting script (WT vs I36A)
+├── compare_rmsf.py           # Comparative RMSF plotting script (WT vs I36A)
+├── plot_comparison.py        # General dual-trajectory comparison plotting script
+├── plot_gyrate_fixed.py      # Corrected Rg time-series plotting script (WT)
+├── plot_rg.py                # Rg time-series plotting script (I36A)
+├── plot_rmsd.py              # Backbone RMSD time-series plotting script (I36A)
+├── plot_rmsf.py              # Residue-level RMSF plotting script (I36A)
+├── plot_wt_analysis.py       # Consolidated WT analysis plotting script
+├── rmsd.xvg                  # Raw WT backbone RMSD time-series data (GROMACS)
+├── rmsf.xvg                  # Raw WT residue fluctuation data (GROMACS)
+├── gyrate.xvg                # Raw WT radius of gyration data (GROMACS)
+├── rmsd_i36a.xvg             # Raw I36A backbone RMSD time-series data (GROMACS)
+├── rg_i36a.xvg               # Raw I36A radius of gyration data (GROMACS)
+├── rmsf_i36a.xvg             # Raw I36A residue fluctuation data (GROMACS)
+├── rmsd.png                  # WT backbone RMSD plot
+├── rmsf.png                  # WT residue fluctuation profile
+├── rg.png                    # WT structural compactness plot
+├── rmsd_i36a.png             # I36A backbone RMSD plot
+├── rmsf_i36a.png             # I36A residue fluctuation profile
+├── rg_i36a.png               # I36A structural compactness plot
+├── rmsd_comparison.png       # Dual-trajectory RMSD comparison (WT vs I36A)
+├── rmsf_comparison.png       # Dual-trajectory residue fluctuation comparison
+├── rg_comparison.png         # Dual-trajectory structural compactness comparison
+├── ubiquitin_alignment.png   # Ray-traced PyMOL superposition render (WT vs I36A)
+└── README.md                 # Comprehensive biophysical documentation
 ```
+
 ## References & Scientific Literature
 
 - Vijay-Kumar, S., Bugg, C. E., & Cook, W. J. (1987). Structure of ubiquitin refined at 1.8 Å resolution. *Journal of Molecular Biology*, 194(3), 531–544. [DOI: 10.1016/0022-2836(87)90679-6](https://doi.org/10.1016/0022-2836(87)90679-6)
