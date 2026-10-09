@@ -28,49 +28,36 @@ To systematically evaluate the time-dependent dynamics, allosteric fluctuation t
 ##  Integrative Computational Framework
 
 This investigation couples static thermodynamic sampling with micro-to-nanoscale explicit-solvent trajectory dynamics:
-[ Stage 1: In Silico Mutagenesis & Relax (PyRosetta) ]
 
-│ • Coordinate initialization from crystal structure (1UBQ, 1.8 Å)
+### Stage 1: In Silico Mutagenesis & Relax (PyRosetta)
 
-│ • Side-chain repacking via PackRotamersMover & FastRelax (ref2015)
+- Coordinate initialization from crystal structure (1UBQ, 1.8 Å)
+- Side-chain repacking via PackRotamersMover & FastRelax (ref2015)
+- Thermodynamic perturbation: ΔΔG = +4.39 REU (cavity-induced destabilization)
+- Monitored mass reduction: 8568 Da (WT) → 8522.8 Da (I36A)
 
-│ • Thermodynamic perturbation: ΔΔG = +4.39 REU (Cavity-induced destabilization)
 
-│ • Monitored mass reduction: 8568 Da (WT) ➔ 8522.844 Da (I36A)
+### Stage 2: Solvation, Topology & Neutrality Verification (GROMACS)
 
-▼
+- All-atom parameterization: AMBER99SB-ILDN force field
+- Solvation: TIP3P explicit water model (7,044 solvent molecules for I36A)
+- Boundary condition: Rhombic Dodecahedron box (dodec, 1.0 nm buffer)
+- Neutral state confirmation: Total net charge = 0.000 e (No counter-ions added)
 
-[ Stage 2: Solvation, Topology & Neutrality Verification (GROMACS) ]
 
-│ • All-atom parameterization: AMBER99SB-ILDN force field
+### Stage 3: Two-Phase Restrained Equilibration
 
-│ • Solvation: TIP3P explicit water model (7,044 solvent molecules for I36A)
+- Steepest Descent EM: Converged (Fmax < 1000 kJ mol⁻¹ nm⁻¹; Fmax ≈ 988 kJ mol⁻¹ nm⁻¹)
+- Isochoric-Isothermal (NVT): 100 ps at T = 300 K (V-rescale thermostat, τt = 0.1 ps)
+- Isobaric-Isothermal (NPT): 100 ps at P = 1.0 bar (Parrinello-Rahman, τp = 2.0 ps)
+- Density plateau reached: ≈ 1006.6 g/L
 
-│ • Boundary condition: Rhombic Dodecahedron box (dodec, 1.0 nm buffer)
 
-│ • Neutral state confirmation: Total net charge = 0.000 e (No counter-ions added)
+### Stage 4: Production Trajectory Profiling & Comparative Analysis
 
-▼
-
-[ Stage 3: Two-Phase Restrained Equilibration ]
-
-│ • Steepest Descent EM: Converged (Fmax < 1000 kJ/mol/nm, Fmax ≈ 988 kJ/mol/nm)
-
-│ • Isochoric-Isothermal (NVT): 100 ps at 300 K (V-rescale thermostat, τt = 0.1 ps)
-
-│ • Isobaric-Isothermal (NPT): 100 ps at 1.0 bar (Parrinello-Rahman, τp = 2.0 ps)
-
-│ • Density plateau reached: ~1006.6 g/L (Bulk water compliance)
-
-▼
-
-[ Stage 4: Production Trajectory Profiling & Comparative Analysis ]
-
-│ • Time-resolved Backbone Root-Mean-Square Deviation (RMSD)
-
-│ • Per-Residue Root-Mean-Square Fluctuation (RMSF) & Dynamic Propagation
-
-│ • Radius of Gyration (Rg) & Hydrophobic Core Compaction Assessment
+- Time-resolved Backbone Root-Mean-Square Deviation (RMSD)
+- Per-Residue Root-Mean-Square Fluctuation (RMSF) & Dynamic Propagation
+- Radius of Gyration (Rg) & Hydrophobic Core Compaction Assessment
 
 ---
 
@@ -82,12 +69,12 @@ This investigation couples static thermodynamic sampling with micro-to-nanoscale
 | Force Field | AMBER99SB-ILDN | Optimized torsional potentials for Ile, Leu, Asp, and Asn |
 | Solvent Model | TIP3P (explicit 3-site) | Standardized compatibility with AMBER protein parameter sets |
 | Box Geometry | Rhombic Dodecahedron (dodec) | Minimized volume (273.54 nm³ for WT) with 1.0 nm minimum edge distance |
-| Net Charge & Ions | Neutral ($\text{Charge} = 0.000\text{ e}$) | Evaluated via gmx genion; self-neutral native state requiring zero ions |
-| Energy Minimization | Steepest Descent | Converged in < 500 steps ($F_{\text{max}} = 988.3\text{ kJ/mol/nm} < 1000$) |
-| NVT Thermalization | 100 ps ($T = 300\text{ K}$) | V-rescale thermostat ($\tau_t = 0.1\text{ ps}$); drift-free ($T_{\text{avg}} = 299.76\text{ K} \pm 3.19\text{ K}$) |
-| NPT Pressurization | 100 ps ($P = 1.0\text{ bar}$) | Parrinello-Rahman barostat ($\tau_p = 2.0\text{ ps}$); equilibrium density $\approx 1006.6\text{ g/L}$ |
+| Net Charge & Ions | Neutral ($q_\text{net} = 0.000\ e$) | Evaluated via gmx genion; self-neutral native state requiring zero ions |
+| Energy Minimization | Steepest Descent | Converged in < 500 steps ($F_\text{max} = 988.3\ \text{kJ mol}^{-1}\ \text{nm}^{-1} < 1000$) |
+| NVT Thermalization | 100 ps ($T = 300\ \text{K}$) | V-rescale thermostat ($\tau_T = 0.1\ \text{ps}$); drift-free ($T_\text{avg} = 299.76 \pm 3.19\ \text{K}$) |
+| NPT Pressurization | 100 ps ($P = 1.0\ \text{bar}$) | Parrinello–Rahman barostat ($\tau_P = 2.0\ \text{ps}$); equilibrium density $\approx 1006.6\ \text{g/L}$ |
 | Long-Range Electrostatics | Particle Mesh Ewald (PME) | 1.0 nm real-space cutoff with 4th-order cubic B-spline interpolation |
-| Integration Timestep | 2.0 fs ($\text{d}t = 0.002\text{ ps}$) | Leap-frog integrator with all bond lengths constrained via LINCS |
+| Integration Timestep | 2.0 fs ($\Delta t = 0.002\ \text{ps}$) | Leap-frog integrator with all bond lengths constrained via LINCS |
 
 ---
 
@@ -97,11 +84,11 @@ This investigation couples static thermodynamic sampling with micro-to-nanoscale
 <p align="center">
   <img src="rmsd_comparison.png" width="75%" alt="Backbone RMSD Comparison: WT vs I36A">
   <br>
-  <em><b>Figure 2:</b> Time evolution of backbone Root-Mean-Square Deviation (RMSD) for native Wild-Type (teal) vs. I36A destabilized mutant (orange).</em>
+  <b><i>Figure 2:</i></b> Time evolution of backbone Root-Mean-Square Deviation (RMSD) for native Wild-Type (teal) vs. I36A destabilized mutant (orange).
 </p>
 
-* Rigid Fold Preservation: Both systems converge below $0.25\text{ nm}$ ($2.5\text{ \AA}$), indicating that the core truncation does not induce gross structural unfolding over the equilibration trajectory.
-* Elevated Conformational Plasticity in I36A: The native WT ubiquitin quickly reaches a rigid plateau ($0.12 - 0.15\text{ nm}$). Conversely, the I36A mutant exhibits elevated baseline drift ($0.15 - 0.22\text{ nm}$) with transient conformational fluctuations between $0.20$ and $0.22\text{ nm}$, reflecting local backbone readjustment to accommodate internal core void space.
+* Rigid Fold Preservation: Both systems converge below $0.25\ \text{nm}$ ($2.5\ \text{\AA}$), indicating that the core truncation does not induce gross structural unfolding over the equilibration trajectory.
+* Elevated Conformational Plasticity in I36A: The native WT ubiquitin quickly reaches a rigid plateau ($0.12\text{--}0.15\ \text{nm}$). Conversely, the I36A mutant exhibits elevated baseline drift ($0.15\text{--}0.22\ \text{nm}$) with transient conformational fluctuations between $0.20$ and $0.22\ \text{nm}$, reflecting local backbone readjustment to accommodate internal core void space.
 
 ---
 
@@ -109,11 +96,11 @@ This investigation couples static thermodynamic sampling with micro-to-nanoscale
 <p align="center">
   <img src="rmsf_comparison.png" width="75%" alt="Per-Residue RMSF Profile: WT vs I36A">
   <br>
-  <em><b>Figure 3:</b> Per-residue Root-Mean-Square Fluctuation (RMSF) profile across the 76 amino acid sequence. Red dashed line indicates the mutation site (Residue 36).</em>
+  <b><i>Figure 3:</i></b> Per-residue Root-Mean-Square Fluctuation (RMSF) profile across the 76 amino acid sequence. Red dashed line indicates the mutation site (Residue 36).
 </p>
 
-* Non-Local Dynamic Propagation: Interestingly, the mutated residue 36 itself displays modest local amplitude, as it remains embedded in the $\beta$-sheet framework. However, the energetic destabilization ($\Delta\Delta G = +4.39\text{ REU}$) propagates allosterically to distal flexible regions.
-* Enhanced Loop & Terminal Mobility: I36A shows pronounced fluctuation spikes around residues 8, 25–30 ($\alpha_1$-$\beta_3$ loop), and 41–47. Most markedly, the flexible C-terminal tail (residues 71–76) exhibits a sharp mobility amplification exceeding $0.50\text{ nm}$, reflecting weakened core-to-surface thermodynamic restraints.
+* Non-Local Dynamic Propagation: Interestingly, the mutated residue 36 itself displays modest local amplitude, as it remains embedded in the $\beta$-sheet framework. However, the energetic destabilization ($\Delta\Delta G = +4.39\ \text{REU}$) propagates allosterically to distal flexible regions.
+* Enhanced Loop & Terminal Mobility: I36A shows pronounced fluctuation spikes around residues 8, 25–30 ($\alpha_1\text{--}\beta_3$ loop), and 41–47. Most markedly, the flexible C-terminal tail (residues 71–76) exhibits a sharp mobility amplification exceeding $0.50\ \text{nm}$, reflecting weakened core-to-surface thermodynamic restraints.
 
 ---
 
@@ -121,19 +108,31 @@ This investigation couples static thermodynamic sampling with micro-to-nanoscale
 <p align="center">
   <img src="rg_comparison.png" width="72%" alt="Radius of Gyration Comparison: WT vs I36A">
   <br>
-  <em><b>Figure 4:</b> Radius of Gyration ($R_g$) profiles over simulation time comparing structural compactness between WT (green solid line) and I36A (orange dashed line).</em>
+  <b><i>Figure 4:</i></b> Radius of Gyration ($R_g$) profiles over simulation time comparing structural compactness between WT (green solid line) and I36A (orange dashed line).
 </p>
-* Native Tightness in WT: Wild-Type maintains an extremely tight average $R_g$ of $1.1794\text{ nm}$ ($\pm 1\%$ variation), congruent with established crystallographic metrics ($R_g \approx 1.18 - 1.19\text{ nm}$).
-* Core Loosening in I36A: The I36A trajectory shifts upward to an average $R_g \approx 1.195\text{ nm}$ with transient expansion peaks reaching $1.213\text{ nm}$. This quantitative expansion corroborates the hypothesis of local core swelling and decreased packing density resulting from the hydrophobic cavity.
+
+* Native Tightness in WT: Wild-Type maintains an extremely tight average $R_g$ of $1.179\ \text{nm}$ ($\pm 1\%$ variation), congruent with established crystallographic metrics ($R_g \approx 1.18\text{--}1.19\ \text{nm}$).
+* Core Loosening in I36A: The I36A trajectory shifts upward to an average $R_g \approx 1.195\ \text{nm}$ with transient expansion peaks reaching $1.213\ \text{nm}$. This quantitative expansion corroborates the hypothesis of local core swelling and decreased packing density resulting from the hydrophobic cavity.
 
 ---
 
-##  Methodological Considerations & Scalability
+## Methodological Considerations & Scalability
 
 1. Short-Timescale Validation of Fold Integrity:
    Ubiquitin is a compact, highly stabilized 76-residue globular system that achieves local equilibrium and characteristic thermal fluctuations within nanosecond timescales. This trajectory validates that the in silico PyRosetta mutant is chemically sound, free of steric overlap, and thermodynamically viable in aqueous solution prior to large-scale deployment.
+
 2. HPC Portability:
-   All configuration .mdp templates, topology builds, and analysis automation scripts (analyze_gyrate.py, compare_rmsf.py, plot_rmsd.py) are modularly structured for direct scaling to 100–500 ns ensembles on High-Performance Computing (HPC) clusters or supercomputing resources.
+   All configuration .mdp templates, topology builds, and analysis automation scripts (analyze_gyrate.py, compare_rmsf.py, plot_rmsd.py) are modularly structured for direct scaling to $100\text{--}500\ \text{ns}$ ensembles on High-Performance Computing (HPC) clusters or supercomputing resources.
+
+---
+
+## Methodological Considerations & Simulation Timescale
+
+While comprehensive conformational landscape sampling and large-scale unfolding kinetics typically benefit from multi-nanosecond to microsecond trajectories (10–100 ns+), an explicit 1.0 ns production timescale was purposefully selected for this comparative benchmark due to several biophysical and computational considerations:
+
+1. High Intrinsic Fold Rigidity: Ubiquitin is an exceptionally stable globular protein characterized by an extensive hydrophobic core and a tight hydrogen-bonding network. Key local perturbations and early-stage dynamic destabilization induced by core cavity mutations (such as I36A) manifest rapidly in explicit solvent within the picosecond-to-nanosecond regime.
+2. Resource & Local Infrastructure Constraints: Simulations and convergence analyses were performed on local workstation infrastructure rather than high-performance computing (HPC) clusters, prioritizing computational efficiency and rapid methodological reproducibility.
+3. Comparative Validation vs. Equilibrium Sampling: The primary objective of this study was targeted comparative trajectory profiling against Rosetta FastRelax free-energy predictions ($\Delta\Delta G$), for which short-timescale structural relaxation and local backbone fluctuation metrics provide sufficient mechanistic validation
 
 ---
 
@@ -151,17 +150,16 @@ This investigation couples static thermodynamic sampling with micro-to-nanoscale
 └── README.md                      # Comprehensive biophysical documentation
 ```
 ## References & Scientific Literature
-- Vijay-Kumar, S., Bugg, C. E., & Cook, W. J. (1987). Structure of ubiquitin refined at 1.8 Å resolution. Journal of Molecular Biology, 194(3), 531–544.DOI: 10.1016/0022-2836(87)90679-6
-- Abraham, M. J., Murtola, T., Schulz, R., Páll, S., Smith, J. C., Hess, B., & Lindahl, E. (2015). GROMACS: High performance molecular simulations through multi-level parallelism from laptops to supercomputers. SoftwareX, 1–2, 19–25.DOI: 10.1016/j.softx.2015.06.001
-- Lindorff-Larsen, K., Piana, S., Palmo, K., Maragakis, P., Klepeis, J. L., Dror, R. O., & Shaw, D. E. (2010). Improved side-chain torsion potentials for the Amber ff99SB protein force field. Proteins: Structure, Function, and Bioinformatics, 78(8), 1950–1958.DOI: 10.1002/prot.22711
-- Alford, R. F., Leaver-Fay, A., Jeliazkov, J. R., et al. (2017). The Rosetta All-Atom Energy Function for Macromolecular Modeling and Design. Journal of Chemical Theory and Computation, 13(6), 3031–3048.DOI: 10.1021/acs.jctc.7b00125
-- Piana, S., Lindorff-Larsen, K., & Shaw, D. E. (2013). Atomic-level description of ubiquitin folding. Proceedings of the National Academy of Sciences (PNAS), 110(15), 5915–5920.DOI: 10.1073/pnas.1218321110
 
+- Vijay-Kumar, S., Bugg, C. E., & Cook, W. J. (1987). Structure of ubiquitin refined at 1.8 Å resolution. *Journal of Molecular Biology*, 194(3), 531–544. [DOI: 10.1016/0022-2836(87)90679-6](https://doi.org/10.1016/0022-2836(87)90679-6)
+- Abraham, M. J., Murtola, T., Schulz, R., Páll, S., Smith, J. C., Hess, B., & Lindahl, E. (2015). GROMACS: High performance molecular simulations through multi-level parallelism from laptops to supercomputers. *SoftwareX*, 1–2, 19–25. [DOI: 10.1016/j.softx.2015.06.001](https://doi.org/10.1016/j.softx.2015.06.001)
+- Lindorff-Larsen, K., Piana, S., Palmo, K., Maragakis, P., Klepeis, J. L., Dror, R. O., & Shaw, D. E. (2010). Improved side-chain torsion potentials for the Amber ff99SB protein force field. *Proteins: Structure, Function, and Bioinformatics*, 78(8), 1950–1958. [DOI: 10.1002/prot.22711](https://doi.org/10.1002/prot.22711)
+- Alford, R. F., Leaver-Fay, A., Jeliazkov, J. R., et al. (2017). The Rosetta All-Atom Energy Function for Macromolecular Modeling and Design. *Journal of Chemical Theory and Computation*, 13(6), 3031–3048. [DOI: 10.1021/acs.jctc.7b00125](https://doi.org/10.1021/acs.jctc.7b00125)
+- Piana, S., Lindorff-Larsen, K., & Shaw, D. E. (2013). Atomic-level description of ubiquitin folding. *Proceedings of the National Academy of Sciences (PNAS)*, 110(15), 5915–5920. [DOI: 10.1073/pnas.1218321110](https://doi.org/10.1073/pnas.1218321110)
 ---
 
 ## Author & Attribution
-- Taban Tavanmand
 
-* Biomolecular Modeling, Structural Bioinformatics & Computational Dynamics
-
-* Pipeline Architecture: In silico Rosetta FastRelax mutagenesis followed by explicit-solvent AMBER99SB-ILDN dynamic trajectory profiling and statistical convergence verification
+**Taban Tavanmand**
+- *Biomolecular Modeling, Structural Bioinformatics & Computational Dynamics*
+- *Pipeline Architecture:* In silico Rosetta FastRelax mutagenesis followed by explicit-solvent AMBER99SB-ILDN dynamic trajectory profiling and statistical convergence verification
