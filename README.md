@@ -14,7 +14,7 @@ Human Ubiquitin (PDB ID: 1UBQ, 76 amino acids) is an archetypal $\beta$-grasp gl
 
 In our upstream structural modeling protocol ([ubiquitin-pyrosetta-stability](https://github.com/tabantavanmand/ubiquitin-pyrosetta-stability)), in silico site-directed mutagenesis truncated this residue to Alanine (I36A), yielding an unfavorable thermodynamic destabilization of $\Delta\Delta G = +4.39\text{ REU}$ (Rosetta Energy Units, ref2015 scoring function). This energetic penalty is primarily driven by steric cavitation and loss of non-polar packing entropy. 
 
-To systematically evaluate the time-dependent dynamics, allosteric fluctuation transmission, and structural compactness under explicit solvent conditions, we executed 10 ns all-atom Molecular Dynamics (MD) simulations using GROMACS 2022 with the AMBER99SB-ILDN force field.
+To systematically evaluate the time-dependent dynamics, allosteric fluctuation transmission, and structural compactness under explicit solvent conditions, we executed 1.0 ns all-atom Molecular Dynamics (MD) simulations using GROMACS 2022 with the AMBER99SB-ILDN force field.
 
 <p align="center">
   <img src="ubiquitin_alignment.png" width="72%" alt="PyMOL Structural Alignment: WT vs I36A">
@@ -71,10 +71,11 @@ This investigation couples static thermodynamic sampling with micro-to-nanoscale
 | Box Geometry | Rhombic Dodecahedron (dodec) | Minimized volume (273.54 nm³ for WT) with 1.0 nm minimum edge distance |
 | Net Charge & Ions | Neutral ($q_\text{net} = 0.000\ e$) | Evaluated via gmx genion; self-neutral native state requiring zero ions |
 | Energy Minimization | Steepest Descent | Converged in < 500 steps ($F_\text{max} = 988.3\ \text{kJ mol}^{-1}\ \text{nm}^{-1} < 1000$) |
-| NVT Thermalization | 100 ps ($T = 300\ \text{K}$) | V-rescale thermostat ($\tau_T = 0.1\ \text{ps}$); drift-free ($T_\text{avg} = 299.76 \pm 3.19\ \text{K}$) |
+| NVT Thermalization | 100 ps ($T = 300\ \text{K}$) | V-rescale thermostat ($\tau_T = 0.1\ \text{ps}$); drift-free ($T_{\text{avg}} = 299.76 \pm 3.19$ K) |
 | NPT Pressurization | 100 ps ($P = 1.0\ \text{bar}$) | Parrinello–Rahman barostat ($\tau_P = 2.0\ \text{ps}$); equilibrium density $\approx 1006.6\ \text{g/L}$ |
 | Long-Range Electrostatics | Particle Mesh Ewald (PME) | 1.0 nm real-space cutoff with 4th-order cubic B-spline interpolation |
 | Integration Timestep | 2.0 fs ($\Delta t = 0.002\ \text{ps}$) | Leap-frog integrator with all bond lengths constrained via LINCS |
+| Production MD Duration | 1.0 ns (1000 ps) | 500,000 steps × 0.002 ps; matches md.log endpoint and all trajectory plots |
 
 ---
 
@@ -116,24 +117,11 @@ This investigation couples static thermodynamic sampling with micro-to-nanoscale
 
 ---
 
-## Methodological Considerations & Scalability
+### Methodological Considerations & Simulation Timescale
 
-1. Short-Timescale Validation of Fold Integrity:
-   Ubiquitin is a compact, highly stabilized 76-residue globular system that achieves local equilibrium and characteristic thermal fluctuations within nanosecond timescales. This trajectory validates that the in silico PyRosetta mutant is chemically sound, free of steric overlap, and thermodynamically viable in aqueous solution prior to large-scale deployment.
-
-2. HPC Portability:
-   All configuration .mdp templates, topology builds, and analysis automation scripts (analyze_gyrate.py, compare_rmsf.py, plot_rmsd.py) are modularly structured for direct scaling to $100\text{--}500\ \text{ns}$ ensembles on High-Performance Computing (HPC) clusters or supercomputing resources.
-
----
-
-## Methodological Considerations & Simulation Timescale
-
-While comprehensive conformational landscape sampling and large-scale unfolding kinetics typically benefit from multi-nanosecond to microsecond trajectories (10–100 ns+), an explicit 1.0 ns production timescale was purposefully selected for this comparative benchmark due to several biophysical and computational considerations:
-
-1. High Intrinsic Fold Rigidity: Ubiquitin is an exceptionally stable globular protein characterized by an extensive hydrophobic core and a tight hydrogen-bonding network. Key local perturbations and early-stage dynamic destabilization induced by core cavity mutations (such as I36A) manifest rapidly in explicit solvent within the picosecond-to-nanosecond regime.
-2. Resource & Local Infrastructure Constraints: Simulations and convergence analyses were performed on local workstation infrastructure rather than high-performance computing (HPC) clusters, prioritizing computational efficiency and rapid methodological reproducibility.
-3. Comparative Validation vs. Equilibrium Sampling: The primary objective of this study was targeted comparative trajectory profiling against Rosetta FastRelax free-energy predictions ($\Delta\Delta G$), for which short-timescale structural relaxation and local backbone fluctuation metrics provide sufficient mechanistic validation
-
+* Exploratory / Pilot Study Scope: The 1.0 ns production timescale (500,000 steps at 0.002 ps/step) was selected as an initial pilot run to establish and validate the end-to-end computational pipeline. While this duration is insufficient for extensive conformational sampling or achieving full thermodynamic equilibrium, it serves as an exploratory window to capture immediate structural relaxation and early destabilization tendencies of the I36A variant relative to WT ubiquitin.
+* Local Resource Constraints & Scalability: Initial simulations were conducted in a local computing environment to test workflow viability. Crucially, the analytical pipeline and automation scripts (plot_rmsd.py, compare_rmsf.py, and analyze_gyrate.py) are fully modular and container/cluster-ready, designed for seamless scaling to production trajectories (e.g., 10–100+ ns) on dedicated high-performance computing (HPC) nodes.
+* Comparative Cross-Validation: Rather than aiming for equilibrium free energy landscapes, the primary objective of this phase is cross-validating MD-derived structural fluctuations against PyRosetta FastRelax $\Delta\Delta G$ predictions, providing a rapid dual-track assessment of mutant destabilization.
 ---
 
 ## Repository File Architecture
